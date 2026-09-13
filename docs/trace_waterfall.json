@@ -1,29 +1,50 @@
 [
   {
     "step": 1,
-    "query": "Chào bạn, bạn có thể giới thiệu quy chế học vụ cơ bản của Đại học VinUni không?",
-    "action_type": "FINAL_ANSWER",
-    "thought": "Câu hỏi chung về quy chế học vụ, trả lời trực tiếp không cần gọi Tool.",
-    "output": "[Mock Agent Response]: Xin chào! Quy chế học vụ VinUni yêu cầu sinh viên tích lũy tối thiểu 120 tín chỉ và duy trì GPA trên 2.0 để tốt nghiệp.",
-    "latency_ms": 2845.93
-  },
-  {
-    "step": 1,
-    "query": "Hãy tra cứu thông tin học vụ của sinh viên SV2026001.",
+    "query": "Kiểm tra đơn hàng ORD2026001",
     "action_type": "TOOL_EXECUTION",
-    "tool_name": "academic_query",
+    "tool_name": "order_query",
     "arguments": {
-      "student_id": "SV2026001"
+      "order_id": "ORD2026001"
     },
-    "observation": {},
-    "latency_ms": 799.12
+    "observation": {
+      "status": "SUCCESS",
+      "order_id": "ORD2026001",
+      "data": {
+        "tracking_code": "VNPOST-260001",
+        "warehouse_location": "Kho Hà Nội - Kệ A12",
+        "status": "Đang xử lý",
+        "recipient": "Nguyễn Văn An"
+      }
+    },
+    "latency_ms": 917.46
   },
   {
     "step": 2,
-    "query": "Hãy tra cứu thông tin học vụ của sinh viên SV2026001.",
+    "query": "Kiểm tra đơn hàng ORD2026001",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "order_query",
+    "arguments": {
+      "order_id": "ORD2026001"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "order_id": "ORD2026001",
+      "data": {
+        "tracking_code": "VNPOST-260001",
+        "warehouse_location": "Kho Hà Nội - Kệ A12",
+        "status": "Đang xử lý",
+        "recipient": "Nguyễn Văn An"
+      }
+    },
+    "latency_ms": 302.09
+  },
+  {
+    "step": 3,
+    "query": "Kiểm tra đơn hàng ORD2026001",
     "action_type": "FINAL_ANSWER",
-    "thought": "Tổng hợp kết quả từ MCP Server thành công.",
-    "output": "Chưa thể trả lời chi tiết do chưa nhận được dữ liệu từ MCP Server (hãy hoàn thành TODO 2.1).",
-    "latency_ms": 10.0
+    "thought": "Gemini phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Thông tin chi tiết về đơn hàng **ORD2026001**:\n\n- **Mã đơn hàng:** ORD2026001\n- **Người nhận:** Nguyễn Văn An\n- **Mã vận đơn:** VNPOST-260001\n- **Vị trí lưu kho:** Kho Hà Nội - Kệ A12\n- **Trạng thái hiện tại:** Đang xử lý",
+    "latency_ms": 3175.37
   }
 ]

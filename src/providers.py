@@ -32,32 +32,63 @@ class MockOfflineProvider(BaseLLMProvider):
         self.model_name = "Offline-Mock-Model-2026"
 
     def generate(self, prompt: str, system_prompt: str = "") -> str:
-        return f"[Mock Chatbot Response]: Xin chào! Tôi đã nhận được câu hỏi '{prompt}'. (Chế độ Chatbot không có Tool tra cứu dữ liệu thời gian thực)."
+        return (
+            f"[Mock Chatbot Response]: Tôi đã nhận được câu hỏi '{prompt}'. "
+            "(Chế độ Chatbot không có quyền truy cập dữ liệu đơn hàng thời gian thực.)"
+        )
 
     def generate_with_tools(self, prompt: str, tools_schema: List[Dict[str, Any]], system_prompt: str = "") -> Dict[str, Any]:
         prompt_lower = prompt.lower()
-        
-        # Mô phỏng nhận diện intent gọi Tool
-        if "sv2026001" in prompt_lower and "đặt lịch" in prompt_lower:
+
+        if "ord9999999" in prompt_lower:
             return {
                 "type": "tool_call",
-                "tool_name": "schedule_appointment",
-                "arguments": {"student_id": "SV2026001", "datetime_str": "14:00 15/09/2026", "advisor_name": "PGS.TS Nguyễn Văn A"},
-                "thought": "Người dùng yêu cầu đặt lịch hẹn tư vấn cho sinh viên SV2026001. Tôi sẽ gọi tool schedule_appointment."
+                "tool_name": "order_query",
+                "arguments": {"order_id": "ORD9999999"},
+                "thought": "Người dùng muốn tra cứu một mã đơn hàng cụ thể. Tôi sẽ gọi order_query."
             }
-        elif "sv2026001" in prompt_lower or "tra cứu" in prompt_lower:
+
+        if (
+            "ord2026002" in prompt_lower
+            and ("đã đóng gói" in prompt_lower or '"status": "đã đóng gói"' in prompt_lower)
+            and ("observation" in prompt_lower or "kết quả tool" in prompt_lower)
+        ):
             return {
                 "type": "tool_call",
-                "tool_name": "academic_query",
-                "arguments": {"student_id": "SV2026001"},
-                "thought": "Người dùng muốn tra cứu thông tin học vụ của sinh viên SV2026001. Tôi sẽ gọi tool academic_query."
+                "tool_name": "update_order_status",
+                "arguments": {"order_id": "ORD2026002", "new_status": "Đang vận chuyển"},
+                "thought": "Observation cho biết ORD2026002 đang ở trạng thái Đã đóng gói, nên tôi sẽ cập nhật sang Đang vận chuyển."
             }
-        else:
+
+        if "ord2026002" in prompt_lower and ("kiểm tra" in prompt_lower or "tra cứu" in prompt_lower):
             return {
-                "type": "text",
-                "content": f"[Mock Agent Response]: Xin chào! Quy chế học vụ VinUni yêu cầu sinh viên tích lũy tối thiểu 120 tín chỉ và duy trì GPA trên 2.0 để tốt nghiệp.",
-                "thought": "Câu hỏi chung về quy chế học vụ, trả lời trực tiếp không cần gọi Tool."
+                "type": "tool_call",
+                "tool_name": "order_query",
+                "arguments": {"order_id": "ORD2026002"},
+                "thought": "Yêu cầu cần kiểm tra trạng thái đơn hàng trước khi quyết định cập nhật, nên tôi sẽ gọi order_query."
             }
+
+        if "ord2026001" in prompt_lower and ("cập nhật" in prompt_lower or "đang vận chuyển" in prompt_lower):
+            return {
+                "type": "tool_call",
+                "tool_name": "update_order_status",
+                "arguments": {"order_id": "ORD2026001", "new_status": "Đang vận chuyển"},
+                "thought": "Người dùng yêu cầu cập nhật trạng thái ORD2026001 sang Đang vận chuyển. Tôi sẽ gọi update_order_status."
+            }
+
+        if "ord2026001" in prompt_lower or "tra cứu" in prompt_lower:
+            return {
+                "type": "tool_call",
+                "tool_name": "order_query",
+                "arguments": {"order_id": "ORD2026001"},
+                "thought": "Người dùng muốn tra cứu thông tin đơn hàng. Tôi sẽ gọi order_query."
+            }
+
+        return {
+            "type": "text",
+            "content": "[Mock Agent Response]: Tôi có thể hỗ trợ tra cứu đơn hàng, kiểm tra vị trí lưu kho và cập nhật trạng thái đơn hàng thông qua các công cụ được cấp.",
+            "thought": "Đây là câu hỏi chung về chức năng hệ thống, không cần gọi Tool."
+        }
 
 
 class GeminiProvider(BaseLLMProvider):

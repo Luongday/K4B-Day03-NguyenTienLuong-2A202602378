@@ -1,0 +1,37 @@
+[
+  {
+    "id": "TC01",
+    "type": "direct_query",
+    "question": "Bạn có thể giới thiệu các chức năng của trợ lý quản lý đơn hàng và kho vận không?",
+    "expected_behavior": "Agent trả lời trực tiếp về khả năng hỗ trợ quản lý đơn hàng, tra cứu vận đơn và kho vận mà không cần gọi Tool.",
+    "complexity": "Low"
+  },
+  {
+    "id": "TC02",
+    "type": "single_tool_query",
+    "question": "Hãy tra cứu thông tin đơn hàng có mã ORD2026001 và cho tôi biết trạng thái hiện tại cùng vị trí lưu kho.",
+    "expected_behavior": "Agent nhận diện nhu cầu tra cứu và tự động phát sinh Tool Call 'order_query' với mã đơn hàng ORD2026001.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC03",
+    "type": "order_status_update",
+    "question": "Hãy cập nhật trạng thái đơn hàng ORD2026001 thành Đang vận chuyển.",
+    "expected_behavior": "Agent tự động phát sinh Tool Call 'update_order_status' với đúng mã đơn hàng ORD2026001 và trạng thái mới 'Đang vận chuyển'.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC04",
+    "type": "multi_step_reasoning",
+    "question": "Hãy kiểm tra thông tin đơn hàng ORD2026002 trước. Nếu đơn hàng hiện đang ở trạng thái Đã đóng gói thì hãy cập nhật trạng thái của đơn hàng thành Đang vận chuyển.",
+    "expected_behavior": "Agent thực hiện chuỗi suy luận ReAct: gọi 'order_query' để kiểm tra trạng thái đơn hàng, phân tích kết quả Observation và chỉ gọi 'update_order_status' nếu trạng thái hiện tại là 'Đã đóng gói'.",
+    "complexity": "High"
+  },
+  {
+    "id": "TC05",
+    "type": "edge_case_handling",
+    "question": "Hãy tra cứu thông tin đơn hàng có mã ORD9999999.",
+    "expected_behavior": "Agent gọi 'order_query', nhận kết quả NOT_FOUND và phản hồi lịch sự rằng không tìm thấy đơn hàng, không tự bịa thông tin.",
+    "complexity": "Medium"
+  }
+]

@@ -1,20 +1,20 @@
 # 📊 BÁO CÁO THU HOẠCH NGHIỆM THU BÀI LAB 3 (BƯỚC 3 — SUBMISSION ARTIFACT)
 
-> **Họ và Tên Học viên:** [Điền Họ và Tên]  
-> **Mã Sinh Viên / Mã Học viên:** [Điền MSSV]  
-> **Chủ đề Lựa chọn:** [Điền tên chủ đề đã chọn từ docs/DANH_SACH_DE_TAI.md hoặc Đề tài Mở]  
+> **Họ và Tên Học viên:** Nguyễn Tiến Lượng 
+> **Mã Sinh Viên / Mã Học viên:** 26A202602378  
+> **Chủ đề Lựa chọn:** Lĩnh vực Sản xuất & Chuỗi cung ứng (Manufacturing & Supply Chain)
 
 ---
 
 ## 1. BẢNG CHẤM ĐIỂM AGENTIC FIT SCORING MATRIX (ĐÁNH GIÁ CHỦ ĐỀ)
 
 | Tiêu chí Đánh giá | Mức độ (1 - 5) | Giải trình chi tiết lý do chọn điểm |
-| :--- | :---: | :--- |
-| **1. Multi-step Reasoning** | / 5 | Bài toán có yêu cầu chia nhỏ nhiều bước suy luận nối tiếp nhau không? |
-| **2. Tool Interaction** | / 5 | Hệ thống có cần kết nối với MCP Server / Cơ sở dữ liệu bên ngoài không? |
-| **3. Dynamic Decision** | / 5 | Bước tiếp theo có phụ thuộc vào kết quả quan sát bước trước không? |
-| **4. Long Horizon Goal** | / 5 | Hệ thống có phải giữ mục tiêu xuyên suốt qua nhiều lượt xử lý không? |
-| **TỔNG ĐIỂM AGENTIC FIT** | **/ 20** | *Nếu tổng điểm > 12/20: Bài toán rất phù hợp triển khai Agentic System.* |
+| :--- |:--------------:| :--- |
+| **1. Multi-step Reasoning** |     4 / 5      | Bài toán có yêu cầu chia nhỏ nhiều bước suy luận nối tiếp nhau không? |
+| **2. Tool Interaction** |     4 / 5      | Hệ thống có cần kết nối với MCP Server / Cơ sở dữ liệu bên ngoài không? |
+| **3. Dynamic Decision** |     5 / 5      | Bước tiếp theo có phụ thuộc vào kết quả quan sát bước trước không? |
+| **4. Long Horizon Goal** |     4 / 5      | Hệ thống có phải giữ mục tiêu xuyên suốt qua nhiều lượt xử lý không? |
+| **TỔNG ĐIỂM AGENTIC FIT** |  **17 / 20**   | *Nếu tổng điểm > 12/20: Bài toán rất phù hợp triển khai Agentic System.* |
 
 ---
 
@@ -28,20 +28,51 @@ Dán 1 đoạn trích xuất log tiêu biểu từ file `docs/trace_waterfall.js
 [
   {
     "step": 1,
+    "query": "Kiểm tra đơn hàng ORD2026001",
     "action_type": "TOOL_EXECUTION",
-    "tool_name": "academic_query",
+    "tool_name": "order_query",
     "arguments": {
-      "student_id": "SV2026001"
+      "order_id": "ORD2026001"
     },
     "observation": {
       "status": "SUCCESS",
-      "student_id": "SV2026001",
+      "order_id": "ORD2026001",
       "data": {
-        "full_name": "Nguyễn Văn An",
-        "gpa": 3.85
+        "tracking_code": "VNPOST-260001",
+        "warehouse_location": "Kho Hà Nội - Kệ A12",
+        "status": "Đang xử lý",
+        "recipient": "Nguyễn Văn An"
       }
     },
-    "latency_ms": 120.5
+    "latency_ms": 917.46
+  },
+  {
+    "step": 2,
+    "query": "Kiểm tra đơn hàng ORD2026001",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "order_query",
+    "arguments": {
+      "order_id": "ORD2026001"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "order_id": "ORD2026001",
+      "data": {
+        "tracking_code": "VNPOST-260001",
+        "warehouse_location": "Kho Hà Nội - Kệ A12",
+        "status": "Đang xử lý",
+        "recipient": "Nguyễn Văn An"
+      }
+    },
+    "latency_ms": 302.09
+  },
+  {
+    "step": 3,
+    "query": "Kiểm tra đơn hàng ORD2026001",
+    "action_type": "FINAL_ANSWER",
+    "thought": "Gemini phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Thông tin chi tiết về đơn hàng **ORD2026001**:\n\n- **Mã đơn hàng:** ORD2026001\n- **Người nhận:** Nguyễn Văn An\n- **Mã vận đơn:** VNPOST-260001\n- **Vị trí lưu kho:** Kho Hà Nội - Kệ A12\n- **Trạng thái hiện tại:** Đang xử lý",
+    "latency_ms": 3175.37
   }
 ]
 ```
@@ -50,10 +81,10 @@ Dán 1 đoạn trích xuất log tiêu biểu từ file `docs/trace_waterfall.js
 
 ## 3. TỔNG KẾT KẾT QUẢ NGHIỆM THU & NỘP BÀI
 
-- [ ] Đã điền API Key thật trong `.env` và xác nhận Agent chạy mượt mà trên LLM API thật (Gemini/OpenAI).
+- [x] Đã điền API Key thật trong `.env` và xác nhận Agent chạy mượt mà trên LLM API thật (Gemini/OpenAI).
 - **Tổng số Test Cases đã chạy thành công:** ___ / 5 test cases.
 - **Số lượt gọi Tool qua MCP Server chính xác:** ___ lượt.
-- **Kết quả đẩy Repo nộp bài:** [ ] Đã Commit và Push mã nguồn thành công lên GitHub cá nhân.
+- **Kết quả đẩy Repo nộp bài:** [x] Đã Commit và Push mã nguồn thành công lên GitHub cá nhân.
 
 ---
 
